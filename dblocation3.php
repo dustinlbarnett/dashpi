@@ -149,7 +149,7 @@ echo "var marker = new L.Marker(markerLocation, {icon: redIcon});";
 echo "         map.addLayer(marker);";
 
 //bind popups to the red marker
-echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Date: </b>$date <b>Time: </b>$time <br><form id=\'map_form\' action=\'dblocation3.php\' method=\'post\'><label><b>Location: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$lat $lng\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form\').submit(); return false;\">$lat $lng</a></form><b>ID: </b>$id').openPopup()";
+echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><form id=\'map_form_date\' action=\'dbdate.php\' method=\'post\'><label><b>Date: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$date\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form_date\').submit(); return false;\">$date</a></form><b>Time: </b>$time <br><form id=\'map_form\' action=\'dblocation3.php\' method=\'post\'><label><b>Location: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$lat $lng\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form\').submit(); return false;\">$lat $lng</a></form><b>ID: </b>$id').openPopup()";
 
 echo "</script>";
 
