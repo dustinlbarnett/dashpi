@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashcam Database</title>
+ 	<link rel="stylesheet" href="stylesheet.css">
+	<meta charset="utf-8" />
+     
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="leaflet/leaflet.css" />
+<head>	
+<div id="map"></div>
+
+	<script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+
+        <script src="leaflet/leaflet.js"></script>
+        <script>
+                var map = L.map('map', { zoomControl:false }).setView([37.96, -121.23], 9);
+
+                L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+                        maxZoom: 18,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +' <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                        id: 'barnettd.kcn6bd59'
+                }).addTo(map);
+		omnivore.gpx('big.gpx').addTo(map);
+		var popup = L.popup();
+
+		function onMapClick(e) {
+			popup
+				.setLatLng(e.latlng)
+				.setContent("" + e.latlng.toString())
+				.openOn(map);
+		}
+
+		map.on('click', onMapClick);
+        </script>
+<div id="form">
+<form action="dblocation3.php" method="post">
+    <Label>Search by ID or Coordinates </label>
+    <input type="text" name="locationresults" input size="28" value="">
+    <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+</form>
+<form action="dbdate.php" method="post">
+   <Label>Search by Day: </label>
+   <input type="text" name="dateresults" value="yyyy-mm-dd" input size="28">
+   <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+</form>
+</div>
+</body>
+</html> 
