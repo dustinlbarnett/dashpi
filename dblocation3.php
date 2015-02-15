@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 <!-- made by dustin -->
-=======
->>>>>>> 065dbad9534a21352af52e4d8d7950df9e694875
 <!DOCTYPE html> 
 <meta charset='utf-8' />
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
