@@ -10,7 +10,7 @@ html, body {
 	height:100%;
 	width:100%;
 }
-#form {
+#searchpanel {
 	position:absolute;
 	font-size:small;
 	background-color:#F8F8F8;
