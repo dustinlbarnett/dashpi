@@ -159,16 +159,32 @@ echo "</script>";
 
 </div>
 <div id="searchpanel">
-<form action='dblocation3.php' method='post'><Label>Search by ID or Location </label>
-<input type='text' name='locationresults' value='' input size="28">
-<input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
-</form>
 <p>
-<form action='index.html' method='post'>
-<Label></label>
-<input type='submit' name='resetmap' value='Reset'>
+<form action="dblocation3.php" method="post">
+    <Label>Search by ID or Location </label>
+    <input type="text" name="locationresults" input size="28" value="">
+</p>
+<p>
+<label>Date:</label>
+    <input type="text" value=""/>
+</p>
+<p>
+<label>Results Within:</label>
+    <select name="distance">
+        <option value="1">1000m</option>
+        <option value=".5" selected>500m</option>
+        <option value=".25">250m</option>
+        <option value=".1">100m</option>
+    </select>
+</p>
+<p>
+<input type="submit" value="Search" />
+</form>
+<form action="index.html">
+<input type="submit" value="Reset Map">
 </form>
 </p>
+</form>
 </div>
 <div id="legend">
 Near Match:<img src='leaflet/images/marker-icon.png' height='23'/> Exact Match:<img src='leaflet/images/marker-icon-red.png' height='24'/>

@@ -13,6 +13,7 @@ html, body {
 #searchpanel {
 	position:absolute;
 	font-size:small;
+	margin-top: 0em;
 	background-color:#F8F8F8;
 	border:2px black;
 	border-radius:5px;

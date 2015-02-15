@@ -35,10 +35,27 @@
 		map.on('click', onMapClick);
         </script>
 <div id="searchpanel">
+<p>
 <form action="dblocation3.php" method="post">
     <Label>Search by ID or Location </label>
     <input type="text" name="locationresults" input size="28" value="">
-    <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+</p>
+<p>
+<label>Date:</label>
+    <input type="text" value=""/>
+</p>
+<p>
+<label>Results Within:</label>
+    <select name="distance">
+        <option value="1">1000m</option>
+        <option value=".5" selected>500m</option>
+        <option value=".25">250m</option>
+        <option value=".1">100m</option>
+    </select>
+</p>
+<p>
+<input type="submit" value="Search" />
+</p>
 </form>
 </div>
 </body>
