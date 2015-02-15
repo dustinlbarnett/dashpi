@@ -4,5 +4,6 @@ Not included:
  - Database
  - Image uploding and processing (geolocation, thumbnails, database import)
  - RaspberryPi data collection script
+ - RaspberryPi data sync
 
 Maybe I'll add those someday.
