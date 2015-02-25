@@ -37,5 +37,5 @@ while [ $j -lt 9999 ]; do
  let j=j+1
  #raspistill -t 1000 -n -q 14 -h 1080 -w 1920 -o "$DESTINATION"/dashcam/images/"$DATETIME"/"`printf %04d $j`.jpg"
  raspistill -t 1000 -n -q 14 -vf -hf -h 1080 -w 1920 -o "$DESTINATION"/dashcam/images/"$DATETIME"/"`printf %04d $j`.jpg"
-# sleep 1
+# sleep 1 # no need for sleep if taking a picture every 1 second, camera stays activated for 1 second before taking picture.
 done
