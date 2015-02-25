@@ -11,7 +11,7 @@ if ! lsusb | grep -wq "PL2303"; then
     echo "$DATETIME GPS detected"
 fi
 
-# Get GPS Time using python script. 
+# Get GPS Time 
 sudo ./gpstime.sh
 
 #set date/time variables
