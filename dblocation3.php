@@ -9,6 +9,7 @@
 <div id="map">
 <?php
 include_once 'includes/sqlconfigs.php';
+session_start();
 // Create connection
 $conn = new mysqli($servername, $username, $password, 'dashcam');
 
@@ -56,6 +57,8 @@ if ($result->num_rows > 0) {
         $filename = substr("$row[SourceFile]",-8);
         $string = "$row[SourceFile]";
         $filepath = explode("/", $string);
+	$_SESSION['videopath'] = $filepath;
+	
 
         $b .= "[\"<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id\"," . $row["lat"] .  "," . $row["lng"]. "],";	
     }
@@ -89,7 +92,7 @@ echo "var marker = new L.Marker(markerLocation, {icon: redIcon});";
 echo "         map.addLayer(marker);";
 
 //bind popups to the red marker
-echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id').openPopup()";
+echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Video: </b><a href=\'videos/videotitle.mp4\'>$videopath</a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id').openPopup()";
 echo "</script>";
 }
 
@@ -149,7 +152,7 @@ echo "var marker = new L.Marker(markerLocation, {icon: redIcon});";
 echo "         map.addLayer(marker);";
 
 //bind popups to the red marker
-echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><form id=\'map_form_date\' action=\'dbdate.php\' method=\'post\'><label><b>Date: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$date\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form_date\').submit(); return false;\">$date</a></form><b>Time: </b>$time <br><form id=\'map_form\' action=\'dblocation3.php\' method=\'post\'><label><b>Location: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$lat $lng\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form\').submit(); return false;\">$lat $lng</a></form><b>ID: </b>$id').openPopup()";
+echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Video: </b><a href=\'videos/videotitle.mp4\'>$filepath[0]</a><br><form id=\'map_form_date\' action=\'dbdate.php\' method=\'post\'><label><b>Date: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$date\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form_date\').submit(); return false;\">$date</a></form><b>Time: </b>$time <br><form id=\'map_form\' action=\'dblocation3.php\' method=\'post\'><label><b>Location: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$lat $lng\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form\').submit(); return false;\">$lat $lng</a></form><b>ID: </b>$id').openPopup()";
 
 echo "</script>";
 
