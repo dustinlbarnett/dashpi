@@ -2,6 +2,7 @@ Dashpi Project
 Included:
  - Web Front End
  - Raspberry Pi Data Collection Scripts (Specific to using BU-353 USB GPS device)
+ 
 Not included:
  - Image Storage
  - Database
