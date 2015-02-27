@@ -5,7 +5,16 @@
 <link rel="stylesheet" href="stylesheet.css">
 <html>
 <body>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+  ga('create', 'UA-42819035-7', 'auto');
+  ga('send', 'pageview');
+
+</script>
 <div id="map">
 <?php
 include_once 'includes/sqlconfigs.php';
@@ -57,7 +66,7 @@ if ($result->num_rows > 0) {
         $filename = substr("$row[SourceFile]",-8);
         $string = "$row[SourceFile]";
         $filepath = explode("/", $string);
-	$_SESSION['videopath'] = $filepath;
+	$_SESSION['videofile'] = $filepath[0];
 	
 
         $b .= "[\"<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id\"," . $row["lat"] .  "," . $row["lng"]. "],";	
@@ -92,7 +101,8 @@ echo "var marker = new L.Marker(markerLocation, {icon: redIcon});";
 echo "         map.addLayer(marker);";
 
 //bind popups to the red marker
-echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Video: </b><a href=\'videos/videotitle.mp4\'>$videopath</a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id').openPopup()";
+echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Video: </b><a href=\"videojs.php\" target=\"_blank\">$filepath[0]</a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id').openPopup()";
+
 echo "</script>";
 }
 
@@ -121,6 +131,7 @@ if ($result->num_rows > 0) {
         $filename = substr("$row[SourceFile]",-8);
         $string = "$row[SourceFile]";
         $filepath = explode("/", $string);
+	$_SESSION['videofile'] = $filepath[0];
 
 //        $b .= "[\"<a href=/$largeimg><img src=/$filepath[0]/$filepath[1]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id\"," . $row["lat"] .  "," . $row["lng"]. "],";
     }
@@ -152,7 +163,7 @@ echo "var marker = new L.Marker(markerLocation, {icon: redIcon});";
 echo "         map.addLayer(marker);";
 
 //bind popups to the red marker
-echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Video: </b><a href=\'videos/videotitle.mp4\'>$filepath[0]</a><br><form id=\'map_form_date\' action=\'dbdate.php\' method=\'post\'><label><b>Date: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$date\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form_date\').submit(); return false;\">$date</a></form><b>Time: </b>$time <br><form id=\'map_form\' action=\'dblocation3.php\' method=\'post\'><label><b>Location: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$lat $lng\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form\').submit(); return false;\">$lat $lng</a></form><b>ID: </b>$id').openPopup()";
+echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Video: </b><a href=\"videojs.php\" target=\"_blank\">$filepath[0]</a></a><br><form id=\'map_form_date\' action=\'dbdate.php\' method=\'post\'><label><b>Date: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$date\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form_date\').submit(); return false;\">$date</a></form><b>Time: </b>$time <br><form id=\'map_form\' action=\'dblocation3.php\' method=\'post\'><label><b>Location: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$lat $lng\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form\').submit(); return false;\">$lat $lng</a></form><b>ID: </b>$id').openPopup()";
 
 echo "</script>";
 
