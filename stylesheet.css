@@ -50,3 +50,17 @@ html, body {
         top: 90px;
         z-index: 6;
 }
+#notes {
+        position:absolute;
+        font-size:small;
+        background-color:#F8F8F8;
+        border:2px black;
+        border-radius:5px;
+        box-shadow: 5px 5px 5px #A8A8A8 ;
+        padding: 5px;
+        width:270px;
+        left: 10px;
+        bottom: 25px;
+        z-index: 5;
+}
+
