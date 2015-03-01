@@ -1,10 +1,9 @@
 <!-- made by dustin -->
 <!DOCTYPE html> 
+<head>
 <meta charset='utf-8' />
 <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 <link rel="stylesheet" href="stylesheet.css">
-<html>
-<body>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -15,10 +14,21 @@
   ga('send', 'pageview');
 
 </script>
+<link href="video-js/video-js.css" rel="stylesheet">
+<script src="video-js/video.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script>$(function() {$( "#dialog" ).dialog({width: 795, autoOpen: false});$( "#opener" ).click(function() {$( "#dialog" ).dialog( "open" );});});</script>
+<html>
+<body>
+
 <div id="map">
 <?php
 include_once 'includes/sqlconfigs.php';
 session_start();
+$videopath = "http://s3-us-west-1.amazonaws.com/dashcam-bucket/videos/";
 // Create connection
 $conn = new mysqli($servername, $username, $password, 'dashcam');
 
@@ -66,7 +76,8 @@ if ($result->num_rows > 0) {
         $filename = substr("$row[SourceFile]",-8);
         $string = "$row[SourceFile]";
         $filepath = explode("/", $string);
-	$_SESSION['videofile'] = $filepath[0];
+	//$_SESSION['videofile'] = $filepath[0];
+	$videofile = $filepath[0];
 	
 
         $b .= "[\"<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id\"," . $row["lat"] .  "," . $row["lng"]. "],";	
@@ -107,7 +118,7 @@ echo "</script>";
 
 }
 
-// ID section
+// Search by ID section
 else {
 
 $sql = "SELECT * FROM imagedata WHERE `id`=$forminput[0]";
@@ -132,7 +143,8 @@ if ($result->num_rows > 0) {
         $filename = substr("$row[SourceFile]",-8);
         $string = "$row[SourceFile]";
         $filepath = explode("/", $string);
-	$_SESSION['videofile'] = $filepath[0];
+	//$_SESSION['videofile'] = $filepath[0];
+	$videofile = $filepath[0];
 
 //        $b .= "[\"<a href=/$largeimg><img src=/$filepath[0]/$filepath[1]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id\"," . $row["lat"] .  "," . $row["lng"]. "],";
     }
@@ -163,11 +175,16 @@ echo "var markerLocation = new L.LatLng($lat, $lng);";
 echo "var marker = new L.Marker(markerLocation, {icon: redIcon});";
 echo "         map.addLayer(marker);";
 
-//bind popups to the red marker
-echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Video: </b><a href=\"videojs.php\" target=\"_blank\" \"toolbar=no, scrollbars=no, resizable=no, width=768, height=432\">$filepath[0]</a><br><form id=\'map_form_date\' action=\'dbdate.php\' method=\'post\'><label><b>Date: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$date\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form_date\').submit(); return false;\">$date</a></form><b>Time: </b>$time <br><form id=\'map_form\' action=\'dblocation3.php\' method=\'post\'><label><b>Location: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$lat $lng\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form\').submit(); return false;\">$lat $lng</a></form><b>ID: </b>$id').openPopup()";
+//bind popups to the red marker - search by ID
+echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Video: </b><a id=\"opener\" runat=\"server\" href=\"#\">$filepath[0]</a><br><form id=\'map_form_date\' action=\'dbdate.php\' method=\'post\'><label><b>Date: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$date\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form_date\').submit(); return false;\">$date</a></form><b>Time: </b>$time <br><form id=\'map_form\' action=\'dblocation3.php\' method=\'post\'><label><b>Location: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$lat $lng\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form\').submit(); return false;\">$lat $lng</a></form><b>ID: </b>$id').openPopup()";
 
 echo "</script>";
 
+//this will be link to video window: 
+// <a id=\"opener\" runat=\"server\" href=\"#\">$filepath[0]</a>
+
+// video dialog box
+echo "<div id=\"dialog\" title=\"\"><video id=\"my_video_1\" class=\"video-js vjs-default-skin\" controls preload=\"auto\" width=\"768\" height=\"432\" data-setup='{ \"playbackRates\": [0.25, 0.5, 1, 1.5, 2] }'><source src=\"$videopath$videofile.mp4\" type='video/mp4'></video></div>";
 
 // end of main if statement
 }
@@ -204,6 +221,12 @@ echo "</script>";
 </div>
 <div id="legend">
 Near Match:<img src='leaflet/images/marker-icon.png' height='23'/> Exact Match:<img src='leaflet/images/marker-icon-red.png' height='24'/>
+</div>
+<div id="notes">
+<b>Notes</b><br>
+- Dates currently not working. Don't use them.<br>
+- Range filter does nothing.<br>
+- Map tracks not up to date.<br>
 </div>
 </body>
 </html>
