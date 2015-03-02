@@ -95,7 +95,7 @@ echo "<script>";
 echo "var map = L.map('map', { zoomControl:false } ).setView([$latitude, $longitude], 19);";
 echo "L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {";
 echo "maxZoom: 30,";
-//echo "attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +' <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imagery © <a href="http://mapbox.com">Mapbox</a>',";
+echo "attribution: 'Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, ' +' <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, ' + 'Imagery © <a href=\"http://mapbox.com\">Mapbox</a>',";
 echo "id: 'barnettd.kcn6bd59'";
 echo "}).addTo(map);";
 
@@ -161,6 +161,7 @@ echo "<script>";
 echo "var map = L.map('map', { zoomControl:false } ).setView([$lat, $lng], 17);";
 echo "L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {";
 echo "maxZoom: 30,";
+echo "attribution: 'Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, ' +' <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, ' + 'Imagery © <a href=\"http://mapbox.com\">Mapbox</a>',";
 echo "id: 'barnettd.kcn6bd59'";
 echo "}).addTo(map);";
 
