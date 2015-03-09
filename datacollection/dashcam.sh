@@ -26,7 +26,7 @@ mkdir -p "$DESTINATION"/dashcam/gps_tracks
 
 # collect gps stream. kill gpspip if running
 killall gpspipe
-gpspipe -r -o "$DESTINATION"/dashcam/gps_tracks/"$DATETIME".nmea &
+gpspipe -r -l -o "$DESTINATION"/dashcam/gps_tracks/"$DATETIME".nmea &
 
 # Create gps trip directory base on date/time
 mkdir -vp "$DESTINATION"/dashcam/images/"$DATETIME"
