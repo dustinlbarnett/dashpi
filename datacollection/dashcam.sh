@@ -39,7 +39,6 @@ while [ $j -lt 9999 ]; do
  #raspistill -t 1000 -n -q 14 -h 1080 -w 1920 -o "$DESTINATION"/dashcam/images/"$DATETIME"/"`printf %04d $j`.jpg"
  raspistill -t 1000 -n -q 14 -vf -hf -h 1080 -w 1920 -o "$DESTINATION"/dashcam/images/"$DATETIME"/"$FILENAME"
  GPSTIMESTAMP=$(sed -n '/^$GPGGA/p' "$DESTINATION"/dashcam/gps_tracks/"$DATETIME".nmea | tail -n 1)
-
  echo $FILENAME,$GPSTIMESTAMP >> "$DESTINATION"/dashcam/images/"$DATETIME"/imagedata.csv
 # sleep 1
 done
