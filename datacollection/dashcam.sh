@@ -30,6 +30,7 @@ gpspipe -r -o "$DESTINATION"/dashcam/gps_tracks/"$DATETIME".nmea &
 
 # Create gps trip directory base on date/time
 mkdir -vp "$DESTINATION"/dashcam/images/"$DATETIME"
+echo "Filename,FixTime,Latitude,Longitude,FixQuality,SatellitesTracked,HorizontalDilutionOfPosition,Altitude,HeightGeoID,TimeSinceDGPSUupdate,DGPSStationID,Checksum" > "$DESTINATION"/dashcam/images/"$DATETIME"/imagedata.csv
 
 #Starting raspistill loop. Loop seems to work better than timelapse. Does exposure adjust in timelapse mode?
 j=0
