@@ -29,6 +29,7 @@
 # place script at /home/pi/
 # Make sure it's executable using chmod  +x dashcam.sh
 # edit crontab and add "@reboot /home/pi/dashcam.sh"
+#
 # Every time rasberry pi is started the script will:
 # 1. Attempt to get current time from GPS 
 # 2. Create dashcam directory and data directories under that based on date
