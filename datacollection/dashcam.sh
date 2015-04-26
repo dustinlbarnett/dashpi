@@ -2,7 +2,7 @@
 
 #    dashcam.sh collects image and location data from a Raspberry Pi and writes it to a file.
 #    More information can be found here: https://github.com/dustinlbarnett/dashpi
-#    Copyright (C) 2015 Dustin Barnett 
+#    Copyright (C) 2015 Dustin Barnett
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -23,28 +23,31 @@
 # gpsd-clients
 # raspistill
 # bc
-# GPS BU-353 Adapter
+# BU-353 GPS Adapter
 
 # Instructions:
-# place script at /home/pi/
-# Make sure it's executable using chmod  +x dashcam.sh
-# edit crontab and add "@reboot /home/pi/dashcam.sh"
+# Adjust DESTINATION and RASPISTILL variables below for you environment
+# Place script at /home/pi/
+# Make sure it's executable using chmod +x dashcam.sh
+# Edit crontab and add "@reboot /home/pi/dashcam.sh"
 #
 # Every time rasberry pi is started the script will:
-# 1. Attempt to get current time from GPS 
+# 1. Attempt to get current time from GPS and set local clock
 # 2. Create dashcam directory and data directories under that based on date
 # 3. Get gps data by running gpspipe and saving nmea data to file at gps_tracks directory
-# 4. Starts loop that takes pictures using raspistill 
-#    - Takes picture at 1080x1920 using raspistill
+# 4. Starts loop that takes pictures using raspistill
+#    - Takes picture at 1080x1920 with 1 second delay using raspistill
 #    - Gets latest $GPGGA sentence from .nmea file @ gps_tracks
 #    - Converts nmea coordinates to lat/lng decimal
 #    - writes coordinates, filename, and time to imagedata.csv
 #    - Starts over with no sleep. Seems to be about 2 seconds probably due to how long it takes to write image file.
-#    - stops at 9999 pictures. To go higher must ajust printf command. 
+#    - stops at 9999 pictures. To go higher must ajust printf command.
 
 
 # Change this to where you want the dashcam directory
 DESTINATION=/home/pi/
+# raspistill command. Adjust for quality settings or image rotation as needed.
+RASPISTILL="raspistill -t 1000 -n -q 14 -vf -hf -h 1080 -w 1920 -o"
 
 #Stop script if BU-353 GPS is not connected.
 if ! lsusb | grep -wq "PL2303"; then
@@ -54,7 +57,7 @@ if ! lsusb | grep -wq "PL2303"; then
     echo "$DATETIME GPS detected"
 fi
 
-# Get GPS Time  
+# Get GPS Time
 # Checks if GPS is fixed by getting mode from gpsd output sentences. Mode less than 2 is low quality fix.
 
 ATTEMPT=0
@@ -62,7 +65,7 @@ GPSFIX=0
 TIMESET=0
 MODE=0
 
-while [ $TIMESET -lt 1 ] 
+while [ $TIMESET -lt 1 ]
         do
 	while [ $ATTEMPT -lt 12 ]
 		do
@@ -77,7 +80,7 @@ while [ $TIMESET -lt 1 ]
 				sleep 5
 			done
 		else
-			echo "GPS fixed, getting time..."	
+			echo "GPS fixed, getting time..."
 			GPSDATE=`gpspipe -w | head -10 | grep TPV | sed -r 's/.*"time":"([^"]*)".*/\1/' | head -1`
 			echo "date -s $GPSDATE"
 			date -s $GPSDATE
@@ -119,7 +122,7 @@ j=0
 while [ $j -lt 9999 ]; do
  let j=j+1
  FILENAME="`printf %04d $j`.jpg"
- raspistill -t 1000 -n -q 14 -vf -hf -h 1080 -w 1920 -o "$DESTINATION"/dashcam/images/"$DATETIME"/"$FILENAME"
+ $RASPISTILL "$DESTINATION"/dashcam/images/"$DATETIME"/"$FILENAME"
  GPSTIMESTAMP=$(sed -n '/^$GPGGA/p' "$DESTINATION"/dashcam/gps_tracks/"$DATETIME".nmea | tail -n 1)
  GPSTIME=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $2}')
  NMEALAT=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $3}')
