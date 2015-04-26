@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Change this to where you want the destination files
+# Change this to where you want the dashcam directory created
 DESTINATION=/home/pi/
 
 #Stop script if GPS is not connected.
@@ -11,7 +11,7 @@ if ! lsusb | grep -wq "PL2303"; then
     echo "$DATETIME GPS detected"
 fi
 
-# Get GPS Time using python script. 
+# Get GPS Time using bash script. 
 sudo ./gpstime.sh
 
 #set date/time variables
