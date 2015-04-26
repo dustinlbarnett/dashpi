@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #    dashcam.sh collects image and location data from a Raspberry Pi and writes it to a file.
-#    More information can be found here: https://github.com/dustinlbarnett/dashpi
+#    More information can be found here: https://gist.github.com/dustinlbarnett/06713ddaa926eebb7f42
 #    Copyright (C) 2015 Dustin Barnett
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 
 # Dependencies:
 # gpsd
