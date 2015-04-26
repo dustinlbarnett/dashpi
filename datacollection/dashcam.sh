@@ -50,27 +50,28 @@ while [ $j -lt 9999 ]; do
  if [ ${#NMEALAT} -gt 9 ]; then
 # echo "LAT Greater than 9"
   LATTEMP=$(echo $NMEALAT | cut -b 1-3)
-  LATTEMP2=$(echo $NMEALAT | cut -b 5-)
+  LATTEMP2=$(echo $NMEALAT | cut -b 4-)
   LATRESULT=`echo "scale =6; $LATTEMP + ($LATTEMP2/60)" | bc -l`
  else
 # echo "LAT 9 or lower"
   LATTEMP=$(echo $NMEALAT | cut -b 1-2)
-  LATTEMP2=$(echo $NMEALAT | cut -b 4-)
+  LATTEMP2=$(echo $NMEALAT | cut -b 3-)
   LATRESULT=`echo "scale =6; $LATTEMP + ($LATTEMP2/60)" | bc -l`
  fi
 
  if [ ${#NMEALNG} -gt 9 ]; then
 # echo "LNG Greater than 9"
   LNGTEMP=$(echo $NMEALNG | cut -b 1-3)
-  LNGTEMP2=$(echo $NMEALNG | cut -b 5-)
+  LNGTEMP2=$(echo $NMEALNG | cut -b 4-)
   LNGRESULT=`echo "scale =6; $LNGTEMP + ($LNGTEMP2/60)" | bc -l`
  else
  # echo "LNG 9 or lower"
   LNGTEMP=$(echo $NMEALNG | cut -b 1-2)
-  LNGTEMP2=$(echo $NMEALNG | cut -b 4-)
+  LNGTEMP2=$(echo $NMEALNG | cut -b 3-)
   LNGRESULT=`echo "scale =6; $LNGTEMP + ($LNGTEMP2/60)" | bc -l`
  fi
 echo "$DATETIME/$FILENAME,$GPSTIME,$LATRESULT $NMEALATDIR,$LNGRESULT $NMEALNGDIR" >> "$DESTINATION"/dashcam/images/"$DATETIME"/imagedata.csv
 # echo $FILENAME,$GPSTIMESTAMP >> "$DESTINATION"/dashcam/images/"$DATETIME"/imagedata.csv
 # sleep 1
 done
+
