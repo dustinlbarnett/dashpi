@@ -114,7 +114,13 @@ gpspipe -r -o "$DESTINATION"/dashcam/gps_tracks/"$DATETIME".nmea &
 # Create gps trip directory base on date/time
 mkdir -p "$DESTINATION"/dashcam/images/"$DATETIME"
 
-echo "Filename,Time,Latitude,Longitude" > "$DESTINATION"/dashcam/images/"$DATETIME"/imagedata.csv
+# should be using GPRMC, not GPGGA
+#2,4,5,6,7,8,10,11,12
+#$GPRMC,204725.000,A,3827.1349,N,12121.6288,W,13.38,189.08,260415,,*26
+#1    2    3    4   5    6   7      8     9   10   11        12     13
+#nmea,time,warn,lat,ldir,lng,lngdir,speed,cmg,date,direction,dirdir,checksum
+
+echo "Filename,Time,date,Latitude,Longitude,speed," > "$DESTINATION"/dashcam/images/"$DATETIME"/imagedata.csv
 
 #Starting raspistill loop.
 j=0
@@ -122,12 +128,14 @@ while [ $j -lt 9999 ]; do
  let j=j+1
  FILENAME="`printf %04d $j`.jpg"
  $RASPISTILL "$DESTINATION"/dashcam/images/"$DATETIME"/"$FILENAME"
- GPSTIMESTAMP=$(sed -n '/^$GPGGA/p' "$DESTINATION"/dashcam/gps_tracks/"$DATETIME".nmea | tail -n 1)
+ GPSTIMESTAMP=$(sed -n '/^$GPRMC/p' "$DESTINATION"/dashcam/gps_tracks/"$DATETIME".nmea | tail -n 1)
  GPSTIME=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $2}')
- NMEALAT=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $3}')
- NMEALATDIR=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $4}')
- NMEALNG=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $5}')
- NMEALNGDIR=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $6}')
+ NMEALAT=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $4}')
+ NMEALATDIR=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $5}')
+ NMEALNG=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $6}')
+ NMEALNGDIR=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $7}')
+ NMEASPEED=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $8}')
+ NMEADATE=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $10}' 
 
  if [ ${#NMEALAT} -gt 9 ]; then
 # echo "LAT Greater than 9"
@@ -152,6 +160,6 @@ while [ $j -lt 9999 ]; do
   LNGTEMP2=$(echo $NMEALNG | cut -b 3-)
   LNGRESULT=`echo "scale =6; $LNGTEMP + ($LNGTEMP2/60)" | bc -l`
  fi
-echo "$DATETIME/$FILENAME,$GPSTIME,$LATRESULT $NMEALATDIR,$LNGRESULT $NMEALNGDIR" >> "$DESTINATION"/dashcam/images/"$DATETIME"/imagedata.csv
+echo "$DATETIME/$FILENAME,$GPSTIME,$NMEADATE,$LATRESULT $NMEALATDIR,$LNGRESULT $NMEALNGDIR,$NMEASPEED" >> "$DESTINATION"/dashcam/images/"$DATETIME"/imagedata.csv
 # sleep 1
 done
