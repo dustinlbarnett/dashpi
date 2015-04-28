@@ -135,7 +135,7 @@ while [ $j -lt 9999 ]; do
  NMEALNG=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $6}')
  NMEALNGDIR=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $7}')
  NMEASPEED=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $8}')
- NMEADATE=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $10}' 
+ NMEADATE=$(echo "$GPSTIMESTAMP" | awk -F ',' '{print $10}')
 
  if [ ${#NMEALAT} -gt 9 ]; then
 # echo "LAT Greater than 9"
