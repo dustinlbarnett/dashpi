@@ -120,7 +120,7 @@ mkdir -p "$DESTINATION"/dashcam/images/"$DATETIME"
 #1    2    3    4   5    6   7      8     9   10   11        12     13
 #nmea,time,warn,lat,ldir,lng,lngdir,speed,cmg,date,direction,dirdir,checksum
 
-echo "filename,time,date,latitude,longitude,speed," > "$DESTINATION"/dashcam/images/"$DATETIME"/imagedata.csv
+echo "filename,time,date,latitude,longitude,speed" > "$DESTINATION"/dashcam/images/"$DATETIME"/imagedata.csv
 
 #Starting raspistill loop.
 j=0
