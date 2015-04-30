@@ -160,6 +160,23 @@ while [ $j -lt 9999 ]; do
   LNGTEMP2=$(echo $NMEALNG | cut -b 3-)
   LNGRESULT=`echo "scale =6; $LNGTEMP + ($LNGTEMP2/60)" | bc -l`
  fi
-echo "$DATETIME/$FILENAME,$GPSTIME,$NMEADATE,$LATRESULT $NMEALATDIR,$LNGRESULT $NMEALNGDIR,$NMEASPEED" >> "$DESTINATION"/dashcam/images/"$DATETIME"/imagedata.csv
+
+#Convert to decimal lat/lng
+
+if [ "$NMEALATDIR" = "S" ]
+then
+NMEALATCONV="-$LATRESULT"
+else
+NMEALATCONV="$LATRESULT"
+fi
+
+if [ "$NMEALNGDIR" = "W" ]
+then
+NMEALNGCONV="-$LNGRESULT"
+else
+NMEALNGCONV="$LNGRESULT"
+fi
+
+echo "$DATETIME/$FILENAME,$GPSTIME,$NMEADATE,$NMEALATCONV,$NMEALNGCONV,$NMEASPEED" >> "$DESTINATION"/dashcam/images/"$DATETIME"/imagedata.csv
 # sleep 1
 done
