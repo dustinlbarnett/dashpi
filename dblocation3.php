@@ -48,13 +48,13 @@ $forminputnum = count($forminput);
 //if statement - greater than 1 = coords
 
 //image storage variable
-$imgstore = "http://s3-us-west-1.amazonaws.com/dashcam-bucket/images";
+$imgstore = "http://s3-us-west-1.amazonaws.com/dashcam-bucket/images/";
 
 if ($forminputnum > 1) {
 
 // sql query to to find locations within .05km of exact match/input
 
-$sql = "SELECT * FROM (SELECT z.id, z.SourceFile, z.lat, z.lng, z.Time, z.Date, p.radius, p.distance_unit * DEGREES(ACOS(COS(RADIANS(p.latpoint)) * COS(RADIANS(z.lat)) * COS(RADIANS(p.longpoint - z.lng)) + SIN(RADIANS(p.latpoint)) * SIN(RADIANS(z.lat)))) AS distance FROM imagedata AS z JOIN (SELECT $latitude AS latpoint, $longitude AS longpoint, 0.05 AS radius, 111.045 AS distance_unit) AS p WHERE z.lat BETWEEN p.latpoint - (p.radius / p.distance_unit) AND p.latpoint + (p.radius / p.distance_unit) AND z.lng BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint))))) AS d WHERE distance <= radius ORDER BY distance";
+$sql = "SELECT * FROM (SELECT z.id, z.SourceFile, z.lat, z.lng, z.Time, z.Date, p.radius, p.distance_unit * DEGREES(ACOS(COS(RADIANS(p.latpoint)) * COS(RADIANS(z.lat)) * COS(RADIANS(p.longpoint - z.lng)) + SIN(RADIANS(p.latpoint)) * SIN(RADIANS(z.lat)))) AS distance FROM imagedata AS z JOIN (SELECT $latitude AS latpoint, $longitude AS longpoint, 0.02 AS radius, 111.045 AS distance_unit) AS p WHERE z.lat BETWEEN p.latpoint - (p.radius / p.distance_unit) AND p.latpoint + (p.radius / p.distance_unit) AND z.lng BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint))))) AS d WHERE distance <= radius ORDER BY distance";
 $result = $conn->query($sql);
 $resultnumber = 0;
 $a = "[";
@@ -77,10 +77,10 @@ if ($result->num_rows > 0) {
         $string = "$row[SourceFile]";
         $filepath = explode("/", $string);
 	//$_SESSION['videofile'] = $filepath[0];
-	$videofile = $filepath[1];
+	$videofile = $filepath[0];
 	
 
-        $b .= "[\"<a href=$imgstore$largeimg><img src=$imgstore/$filepath[1]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id\"," . $row["lat"] .  "," . $row["lng"]. "],";	
+        $b .= "[\"<a href=$imgstore$largeimg target=_blank><img src=$imgstore$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id\"," . $row["lat"] .  "," . $row["lng"]. "],";	
     }
 
 } else {
@@ -112,7 +112,7 @@ echo "var marker = new L.Marker(markerLocation, {icon: redIcon});";
 echo "         map.addLayer(marker);";
 
 //bind popups to the red marker
-echo "marker.bindPopup('<a href=$imgstore/$largeimg><img src=$imgstore/$filepath[1]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Video: </b><a id=\"opener\" runat=\"server\" href=\"#\">$filepath[1]</a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id').openPopup()";
+echo "marker.bindPopup('<a href=$imgstore$largeimg target=_blank><img src=$imgstore$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Video: </b><a id=\"opener\" runat=\"server\" href=\"#\">$filepath[0]</a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id').openPopup()";
 
 echo "</script>";
 
@@ -145,9 +145,8 @@ if ($result->num_rows > 0) {
         $string = "$row[SourceFile]";
         $filepath = explode("/", $string);
 	//$_SESSION['videofile'] = $filepath[0];
-	$videofile = $filepath[1];
+	$videofile = $filepath[0];
 
-//        $b .= "[\"<a href=/$largeimg><img src=/$filepath[0]/$filepath[1]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Date: </b>$date <b>Time: </b>$time <br><b>Location: </b>$lat $lng <br><b>ID: </b>$id\"," . $row["lat"] .  "," . $row["lng"]. "],";
     }
 
 } else {
@@ -178,7 +177,7 @@ echo "var marker = new L.Marker(markerLocation, {icon: redIcon});";
 echo "         map.addLayer(marker);";
 
 //bind popups to the red marker - search by ID
-echo "marker.bindPopup('<a href=$imgstore$largeimg><img src=$imgstore/$filepath[1]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Video: </b><a id=\"opener\" runat=\"server\" href=\"#\">$filepath[1]</a><br><form id=\'map_form_date\' action=\'dbdate.php\' method=\'post\'><label><b>Date: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$date\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form_date\').submit(); return false;\">$date</a></form><b>Time: </b>$time <br><form id=\'map_form\' action=\'dblocation3.php\' method=\'post\'><label><b>Location: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$lat $lng\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form\').submit(); return false;\">$lat $lng</a></form><b>ID: </b>$id').openPopup()";
+echo "marker.bindPopup('<a href=$imgstore$largeimg target=_blank><img src=$imgstore$filepath[0]/_thumbs/$filename style=width:256px;height:144px></a><br><b>Video: </b><a id=\"opener\" runat=\"server\" href=\"#\">$filepath[0]</a><br><form id=\'map_form_date\' action=\'dbdate.php\' method=\'post\'><label><b>Date: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$date\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form_date\').submit(); return false;\">$date</a></form><b>Time: </b>$time <br><form id=\'map_form\' action=\'dblocation3.php\' method=\'post\'><label><b>Location: </b></label></><input type=\'hidden\' name=\'locationresults\' value=\'$lat $lng\' /><a href=\"javascript:{}\" onclick=\"document.getElementById(\'map_form\').submit(); return false;\">$lat $lng</a></form><b>ID: </b>$id').openPopup()";
 
 echo "</script>";
 
@@ -190,6 +189,8 @@ echo "<div id=\"dialog\" title=\"\"><video id=\"my_video_1\" class=\"video-js vj
 
 // end of main if statement
 }
+
+
 ?>
 
 </div>
@@ -200,7 +201,8 @@ echo "<div id=\"dialog\" title=\"\"><video id=\"my_video_1\" class=\"video-js vj
     <input type="text" name="locationresults" input size="28" value="">
 </p>
 <p>
-<label>Date</label><br>
+<form action="dblocation3.php" method="post">
+    <label>Date</label><br>
     <input type="text" value=""/>
 </p>
 <p>
